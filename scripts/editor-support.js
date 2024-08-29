@@ -35,7 +35,7 @@ async function applyChanges(event) {
     || detail?.request?.to?.container?.resource; // move in sections
   const newLocation = detail?.request?.newLocation;
   if (newLocation) {
-    // change the ref parameter in the URL to newRef
+    // change the ref parameter in the URL to newRef 
     const aTag = document.createElement('a');
     aTag.href = newLocation;
     event.target.append(aTag);
