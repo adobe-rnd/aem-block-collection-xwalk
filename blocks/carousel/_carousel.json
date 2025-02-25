@@ -1,6 +1,6 @@
 {
-	"definitions": [
-		{
+  "definitions": [
+    {
       "title": "Carousel",
       "id": "carousel",
       "plugins": {
@@ -10,7 +10,7 @@
             "template": {
               "name": "Carousel",
               "model": "carousel",
-              "filter":"carousel"
+              "filter": "carousel"
             }
           }
         }
@@ -31,9 +31,9 @@
         }
       }
     }
-	],
-	"models": [
-		{
+  ],
+  "models": [
+    {
       "id": "carousel-item",
       "fields": [
         {
@@ -59,11 +59,11 @@
         }
       ]
     }
-	],
-	"filters": [ {
-    "id": "carousel",
-    "components": [
-      "carousel-item"
-    ]
-  }]
+  ],
+  "filters": [
+    {
+      "id": "carousel",
+      "components": ["carousel-item"]
+    }
+  ]
 }

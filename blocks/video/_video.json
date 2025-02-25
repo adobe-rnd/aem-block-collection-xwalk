@@ -1,6 +1,6 @@
 {
-	"definitions": [
-		{
+  "definitions": [
+    {
       "title": "Video",
       "id": "video",
       "plugins": {
@@ -16,8 +16,8 @@
         }
       }
     }
-	],
-	"models": [
+  ],
+  "models": [
     {
       "id": "video",
       "fields": [
@@ -61,9 +61,11 @@
         }
       ]
     }
-	],
-	"filters": [{
-    "id":"video",
-    "components":[]
-  }]
+  ],
+  "filters": [
+    {
+      "id": "video",
+      "components": []
+    }
+  ]
 }

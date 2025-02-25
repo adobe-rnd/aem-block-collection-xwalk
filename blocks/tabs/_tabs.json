@@ -54,10 +54,10 @@
       ]
     }
   ],
-  "filters": [{
-    "id": "tabs",
-    "components": [
-      "tabs-item"
-    ]
-  }]
+  "filters": [
+    {
+      "id": "tabs",
+      "components": ["tabs-item"]
+    }
+  ]
 }

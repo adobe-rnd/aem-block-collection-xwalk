@@ -18,31 +18,31 @@
     }
   ],
   "models": [
-      {
-          "id": "embed",
-          "fields": [
-              {
-                  "component": "reference",
-                  "valueType": "string",
-                  "name": "embed_placeholder",
-                  "label": "Placeholder Image",
-                  "multi": false
-              },
-              {
-                  "component": "text",
-                  "valueType": "string",
-                  "name": "embed_placeholderAlt",
-                  "value": "",
-                  "label": "Placeholder Image Alt Text"
-              },
-              {
-                  "component": "text",
-                  "valueType": "string",
-                  "name": "embed_uri",
-                  "label": "URI"
-              }
-          ]
-      }
+    {
+      "id": "embed",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "embed_placeholder",
+          "label": "Placeholder Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "embed_placeholderAlt",
+          "value": "",
+          "label": "Placeholder Image Alt Text"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "embed_uri",
+          "label": "URI"
+        }
+      ]
+    }
   ],
   "filters": []
 }
