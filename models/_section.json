@@ -43,22 +43,23 @@
     {
       "id": "section",
       "components": [
-        "text",
-        "image",
-        "button",
-        "title",
-        "hero",
-        "cards",
-        "columns",
         "accordion",
-        "table",
-        "search",
-        "video",
+        "button",
+        "cards",
         "carousel",
-        "tabs",
-        "fragment",
+        "columns",
         "embed",
-        "quote"
+        "fragment",
+        "form",
+        "hero",
+        "image",
+        "quote",
+        "search",
+        "tabs",
+        "table",
+        "text",
+        "title",
+        "video"
       ]
     }
   ]
