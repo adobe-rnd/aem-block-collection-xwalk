@@ -55,6 +55,10 @@
   padding: 0 16px;
 }
 
+.accordion details:not([open]) .accordion-item-body {
+  display: none;
+}
+
 .accordion details[open] .accordion-item-body {
   border-top: 1px solid #dadada;
   background-color: var(--background-color);
