@@ -25,8 +25,7 @@
             "template": {
               "name": "Tab",
               "model": "tabs-item",
-              "title": "Tab Name",
-              "content": "<p>Lorem Ipsum</p>"
+              "title": "Tab Name"
             }
           }
         }
