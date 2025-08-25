@@ -11,16 +11,6 @@
  */
 
 /* eslint-env browser */
-
-/**
- * log RUM if part of the sample.
- * @param {string} checkpoint identifies the checkpoint in funnel
- * @param {Object} data additional data for RUM sample
- * @param {string} data.source DOM node that is the source of a checkpoint event,
- * identified by #id or .classname
- * @param {string} data.target subject of the checkpoint event,
- * for instance the href of a link, or a search term
- */
 function sampleRUM(checkpoint, data) {
   // eslint-disable-next-line max-len
   const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
@@ -142,19 +132,18 @@ function sampleRUM(checkpoint, data) {
 function setup() {
   window.hlx = window.hlx || {};
   window.hlx.RUM_MASK_URL = 'full';
+  window.hlx.RUM_MANUAL_ENHANCE = true;
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
     try {
-      const scriptURL = import.meta?.url
-        ? new URL(import.meta.url)
-        : new URL(scriptEl.src, window.location);
+      const scriptURL = new URL(scriptEl.src, window.location);
       if (scriptURL.host === window.location.host) {
-        [window.hlx.codeBasePath] = scriptURL.pathname.split(/\/scripts\/(scripts|aem)\.js/);
+        [window.hlx.codeBasePath] = scriptURL.pathname.split('/scripts/scripts.js');
       } else {
-        [window.hlx.codeBasePath] = scriptURL.href.split(/\/scripts\/(scripts|aem)\.js/);
+        [window.hlx.codeBasePath] = scriptURL.href.split('/scripts/scripts.js');
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -380,17 +369,16 @@ function wrapTextNodes(block) {
     'H5',
     'H6',
   ];
+
   const wrap = (el) => {
     const wrapper = document.createElement('p');
     wrapper.append(...el.childNodes);
     [...el.attributes]
       // move the instrumentation from the cell to the new paragraph, also keep the class
       // in case the content is a buttton and the cell the button-container
-      .filter(
-        ({ nodeName }) => nodeName === 'class'
-          || nodeName.startsWith('data-aue')
-          || nodeName.startsWith('data-richtext'),
-      )
+      .filter(({ nodeName }) => nodeName === 'class'
+        || nodeName.startsWith('data-aue')
+        || nodeName.startsWith('data-richtext'))
       .forEach(({ nodeName, nodeValue }) => {
         wrapper.setAttribute(nodeName, nodeValue);
         el.removeAttribute(nodeName);
@@ -454,16 +442,18 @@ function decorateButtons(element) {
 
 /**
  * Add <img> for icon, prefixed with codeBasePath and optional prefix.
- * @param {span} [element] span element with icon classes
- * @param {string} [prefix] prefix to be added to icon the src
+ * @param {Element} [span] span element with icon classes
+ * @param {string} [prefix] prefix to be added to icon src
+ * @param {string} [alt] alt text to be added to icon
  */
-function decorateIcon(span, prefix = '') {
+function decorateIcon(span, prefix = '', alt = '') {
   const iconName = Array.from(span.classList)
     .find((c) => c.startsWith('icon-'))
     .substring(5);
   const img = document.createElement('img');
   img.dataset.iconName = iconName;
   img.src = `${window.hlx.codeBasePath}${prefix}/icons/${iconName}.svg`;
+  img.alt = alt;
   img.loading = 'lazy';
   img.width = 16;
   img.height = 16;
@@ -491,10 +481,10 @@ function decorateSections(main) {
     const wrappers = [];
     let defaultContent = false;
     [...section.children].forEach((e) => {
-      if (e.tagName === 'DIV' || !defaultContent) {
+      if ((e.tagName === 'DIV' && e.className) || !defaultContent) {
         const wrapper = document.createElement('div');
         wrappers.push(wrapper);
-        defaultContent = e.tagName !== 'DIV';
+        defaultContent = e.tagName !== 'DIV' || !e.className;
         if (defaultContent) wrapper.classList.add('default-content-wrapper');
       }
       wrappers[wrappers.length - 1].append(e);
@@ -510,7 +500,10 @@ function decorateSections(main) {
       const meta = readBlockConfig(sectionMeta);
       Object.keys(meta).forEach((key) => {
         if (key === 'style') {
-          const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
+          const styles = meta.style
+            .split(',')
+            .filter((style) => style)
+            .map((style) => toClassName(style.trim()));
           styles.forEach((style) => section.classList.add(style));
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
@@ -642,17 +635,11 @@ async function loadFooter(footer) {
 }
 
 /**
- * Load LCP block and/or wait for LCP in default content.
- * @param {Array} lcpBlocks Array of blocks
+ * Wait for Image.
+ * @param {Element} section section element
  */
-async function waitForLCP(lcpBlocks) {
-  const block = document.querySelector('.block');
-  const hasLCPBlock = block && lcpBlocks.includes(block.dataset.blockName);
-  if (hasLCPBlock) await loadBlock(block);
-
-  document.body.style.display = null;
-  const lcpCandidate = document.querySelector('main img');
-
+async function waitForFirstImage(section) {
+  const lcpCandidate = section.querySelector('img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
       lcpCandidate.setAttribute('loading', 'eager');
@@ -700,23 +687,6 @@ async function loadSections(element) {
   }
 }
 
-/**
- * Wait for Image.
- * @param {Element} section section element
- */
-async function waitForFirstImage(section) {
-  const lcpCandidate = section.querySelector('img');
-  await new Promise((resolve) => {
-    if (lcpCandidate && !lcpCandidate.complete) {
-      lcpCandidate.setAttribute('loading', 'eager');
-      lcpCandidate.addEventListener('load', resolve);
-      lcpCandidate.addEventListener('error', resolve);
-    } else {
-      resolve();
-    }
-  });
-}
-
 init();
 
 export {
@@ -734,14 +704,13 @@ export {
   loadFooter,
   loadHeader,
   loadScript,
+  loadSection,
+  loadSections,
   readBlockConfig,
   sampleRUM,
   setup,
   toCamelCase,
   toClassName,
-  waitForLCP,
-  loadSection,
-  loadSections,
   waitForFirstImage,
   wrapTextNodes,
 };

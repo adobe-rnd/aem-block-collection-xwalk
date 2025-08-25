@@ -1,4 +1,7 @@
-[
+[  
+  {
+    "...": "./_page.json#/models"
+  },
   {
     "...": "./_image.json#/models"
   },
