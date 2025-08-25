@@ -21,6 +21,12 @@ function getState(block) {
   if (block.matches('.carousel')) {
     return block.dataset.activeSlide;
   }
+  if (block.matches('.tabs')) {
+    return [...block.querySelectorAll('.tabs-panel[aria-hidden="false"]')].map(
+      (panel) => panel.dataset.aueResource,
+    );
+  }
+
   return null;
 }
 
@@ -33,6 +39,11 @@ function setState(block, state) {
   if (block.matches('.carousel')) {
     block.style.display = null;
     showSlide(block, state, 'instant');
+  }
+  if (block.matches('.tabs')) {
+    block.querySelectorAll('.tabs-panel').forEach((panel) => {
+      panel.setAttribute('aria-hidden', !state.includes(panel.dataset.aueResource));
+    });
   }
 }
 
@@ -146,7 +157,7 @@ function handleSelection(event) {
     }
 
     if (block && block.matches('.tabs')) {
-      const tabs = [...block.querySelectorAll('.tabs-panel > div')];
+      const tabs = [...block.querySelectorAll('.tabs-panel')];
       const index = tabs.findIndex((tab) => tab.dataset.aueResource === resource);
       if (index !== -1) {
         block.querySelectorAll('.tabs-list button')[index]?.click();
