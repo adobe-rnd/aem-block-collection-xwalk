@@ -12,20 +12,6 @@ import {
 import { decorateRichtext } from './editor-support-rte.js';
 import { decorateMain } from './scripts.js';
 
-/**
- *
- * @param {Element} block
- * @param {HTMLElement} block
- * Use this function to trigger a mutation for the UI editor overlay when you
- * have a scrollable block
- */
-function createMutation(block) {
-  block.setAttribute('xwalk-scroll-mutation', 'true');
-  block.querySelector('.carousel-slides').onscrollend = () => {
-    block.removeAttribute('xwalk-scroll-mutation');
-  };
-}
-
 function getState(block) {
   if (block.matches('.accordion')) {
     return [...block.querySelectorAll('details[open]')].map(
@@ -46,8 +32,7 @@ function setState(block, state) {
   }
   if (block.matches('.carousel')) {
     block.style.display = null;
-    createMutation(block);
-    showSlide(block, state);
+    showSlide(block, state, 'instant');
   }
 }
 
@@ -154,8 +139,12 @@ function handleSelection(event) {
     }
 
     if (block && block.matches('.carousel')) {
-      createMutation(block);
+      const slideIndex = [...block.querySelectorAll('.carousel-slide')].findIndex((slide) => slide === element);
+      if (slideIndex !== -1) {
+        showSlide(block, slideIndex, 'instant');
+      }
     }
+
     if (block && block.matches('.tabs')) {
       const tabs = [...block.querySelectorAll('.tabs-panel > div')];
       const index = tabs.findIndex((tab) => tab.dataset.aueResource === resource);
