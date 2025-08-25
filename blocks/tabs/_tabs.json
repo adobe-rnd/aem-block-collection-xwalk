@@ -25,7 +25,8 @@
             "template": {
               "name": "Tab",
               "model": "tabs-item",
-              "title": "Tab Name"
+              "title": "Tab Name",
+              "content_headingType": "h3"
             }
           }
         }
@@ -46,14 +47,14 @@
         {
           "component": "text",
           "valueType": "string",
-          "name": "heading",
+          "name": "content_heading",
           "value": "",
           "label": "Heading"
         },
         {
           "component": "select",
           "valueType": "string",
-          "name": "headingType",
+          "name": "content_headingType",
           "value": "",
           "label": "Heading Type",
           "options": [
@@ -78,13 +79,13 @@
         {
           "component": "reference",
           "valueType": "string",
-          "name": "image",
+          "name": "content_image",
           "label": "Image",
           "multi": false
         },
         {
           "component": "richtext",
-          "name": "content",
+          "name": "content_richtext",
           "value": "",
           "label": "Content",
           "valueType": "string"

@@ -407,7 +407,8 @@
                 "template": {
                   "name": "Tab",
                   "model": "tabs-item",
-                  "title": "Tab Name"
+                  "title": "Tab Name",
+                  "content_headingType": "h3"
                 }
               }
             }
