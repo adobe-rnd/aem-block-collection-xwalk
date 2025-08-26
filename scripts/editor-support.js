@@ -29,7 +29,7 @@ function getState(block) {
   return null;
 }
 
-function setState(block, state, options = []) {
+function setState(block, state) {
   if (block.matches('.accordion')) {
     block.querySelectorAll('details').forEach((details) => {
       details.open = state.includes(details.dataset.aueResource);
@@ -37,7 +37,7 @@ function setState(block, state, options = []) {
   }
   if (block.matches('.carousel')) {
     block.style.display = null;
-    showSlide(block, state, ...options);
+    showSlide(block, state, 'instant');
   }
   if (block.matches('.tabs')) {
     const tabs = [...block.querySelectorAll('.tabs-panel')];
@@ -149,7 +149,7 @@ function handleSelection(event) {
 
     if (block && block.matches('.carousel')) {
       const slideIndex = [...block.querySelectorAll('.carousel-slide')].findIndex((slide) => slide === element);
-      setState(block, slideIndex, ['instant']);
+      setState(block, slideIndex);
     }
 
     if (block && block.matches('.tabs')) {
