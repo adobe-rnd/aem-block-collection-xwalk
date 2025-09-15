@@ -571,12 +571,6 @@
     "id": "video",
     "fields": [
       {
-        "component": "aem-content",
-        "valueType": "string",
-        "name": "uri",
-        "label": "Video"
-      },
-      {
         "component": "multiselect",
         "name": "classes",
         "value": "",
@@ -593,6 +587,12 @@
             ]
           }
         ]
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "placeholder_uri",
+        "label": "Video"
       },
       {
         "component": "reference",
