@@ -18,6 +18,7 @@
       "form",
       "hero",
       "image",
+      "library-metadata",
       "quote",
       "search",
       "tabs",
@@ -59,6 +60,10 @@
       "button",
       "title"
     ]
+  },
+  {
+    "id": "library-metadata",
+    "components": []
   },
   {
     "id": "table",
